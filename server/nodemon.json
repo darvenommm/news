@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "execMap": {
+    "ts": "bun start"
+  },
+  "ext": "ts",
+  "ignore": ["*.test.ts"],
+  "watch": ["src"]
+}
