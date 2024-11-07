@@ -2,6 +2,7 @@ import { default as bcrypt } from 'bcrypt';
 
 import { TablesCreator } from '@/base/tableCreator';
 import { getUniqueId } from '@/helpers';
+import { USERNAME_CONSTRAINTS } from './constraints';
 import { Role, type IRole } from './types';
 import { DATABASE, type IDatabase } from '@/database';
 import { ADMIN_SETTINGS, type IAdminSettings } from '@/settings/admin';
@@ -14,8 +15,7 @@ import type { UserCreatingData } from './types';
 export const AUTH_TABLES_CREATOR = getUniqueId();
 
 export class AuthTablesCreator extends TablesCreator {
-  private readonly MAX_ROLE_LENGTH = 64;
-  private readonly MAX_USERNAME_LENGTH = 32;
+  private readonly MAX_ROLE_LENGTH = 32;
   private readonly MAX_EMAIL_LENGTH = 320;
   private readonly MAX_BCRYPT_LENGTH = 72;
 
@@ -48,7 +48,7 @@ export class AuthTablesCreator extends TablesCreator {
     await sql.unsafe(`
       CREATE TABLE IF NOT EXISTS news.users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        username VARCHAR(${this.MAX_USERNAME_LENGTH}) NOT NULL UNIQUE,
+        username VARCHAR(${USERNAME_CONSTRAINTS.maxLength}) NOT NULL UNIQUE,
         email VARCHAR(${this.MAX_EMAIL_LENGTH}) NOT NULL UNIQUE,
         "hashedPassword" VARCHAR(${this.MAX_BCRYPT_LENGTH}) NOT NULL,
         session UUID DEFAULT gen_random_uuid(),
@@ -79,8 +79,8 @@ export class AuthTablesCreator extends TablesCreator {
   private async addAdminUserIfNeed(sql: Sql): Promise<void> {
     const admins = await sql`
       SELECT *
-      FROM news.roles
-      WHERE name = ${Role.ADMIN}
+      FROM news.users
+      WHERE role = ${Role.ADMIN}
       LIMIT 1;
     `;
 

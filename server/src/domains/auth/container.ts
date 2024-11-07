@@ -8,7 +8,6 @@ import { AUTH_CONTROLLER, AuthController } from './controller';
 import { SIGN_UP_VALIDATOR, SignUpValidator } from './validators/signUp';
 import { SIGN_IN_VALIDATOR, SignInValidator } from './validators/signIn';
 import { IS_AUTHENTICATED_GUARD, IsAuthenticatedGuard } from './guards/isAuthenticated';
-import { IS_HAS_PERMISSION_GUARD, IsHasPermissionGuard } from './guards/isHasPermission';
 
 import type { AwilixContainer } from 'awilix';
 
@@ -22,6 +21,5 @@ export const addAuthDependenciesIntoContainer = (container: AwilixContainer): vo
     [SIGN_UP_VALIDATOR]: asClass(SignUpValidator).singleton(),
     [SIGN_IN_VALIDATOR]: asClass(SignInValidator).singleton(),
     [IS_AUTHENTICATED_GUARD]: asClass(IsAuthenticatedGuard).singleton(),
-    [IS_HAS_PERMISSION_GUARD]: asClass(IsHasPermissionGuard).singleton(),
   });
 };

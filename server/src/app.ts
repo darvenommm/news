@@ -9,25 +9,33 @@ import { AUTH_CONTROLLER } from './domains/auth/controller';
 import { getUniqueId } from './helpers';
 import { SERVER_SETTINGS, type IServerSettings } from './settings/server';
 import { EXTRA_SETTINGS, type IExtraSettings } from './settings/extra';
+import { NEWS_CONTROLLER } from './domains/news';
+import { AUTH_MIDDLEWARE } from './domains/auth';
 
 import type { Controller } from '@/base/controller';
 import type { Errors } from './base/errors';
 import type { Express, Request, Response, NextFunction } from 'express';
 import type { IContainer } from './container';
+import type { Middleware } from './base/middleware';
 
 export const APPLICATION = getUniqueId();
 
 export class Application {
   private readonly server: Express;
 
-  private readonly authController: Controller;
+  private readonly controllers: Iterable<Controller>;
   private readonly serverSettings: IServerSettings;
   private readonly extraSettings: IExtraSettings;
+  private readonly authMiddleware: Middleware;
 
   public constructor(container: IContainer) {
-    this.authController = container[AUTH_CONTROLLER] as Controller;
     this.serverSettings = container[SERVER_SETTINGS] as IServerSettings;
     this.extraSettings = container[EXTRA_SETTINGS] as IExtraSettings;
+    this.authMiddleware = container[AUTH_MIDDLEWARE] as Middleware;
+
+    const authController = container[AUTH_CONTROLLER] as Controller;
+    const newsController = container[NEWS_CONTROLLER] as Controller;
+    this.controllers = [authController, newsController];
 
     this.server = this.getSetServer();
   }
@@ -51,7 +59,12 @@ export class Application {
     server.use(cors());
     server.use(express.json());
     server.use(cookieParser(this.extraSettings.secret));
-    server.use(this.authController.router);
+    server.use(this.authMiddleware.middleware);
+
+    for (const controller of this.controllers) {
+      server.use(controller.router);
+    }
+
     server.use(this.errorsHandler.bind(this));
 
     return server;
@@ -63,9 +76,11 @@ export class Application {
     response: Response<{ errors: Errors }>,
     _next: NextFunction,
   ): void {
+    const InternalServerErrors = ['Some internal server error'];
+
     if (error instanceof InternalServerError) {
       console.error(error.message, error.stack);
-      response.status(error.status).json({ errors: ['Some internal Error'] });
+      response.status(error.status).json({ errors: InternalServerErrors });
       return;
     }
 
@@ -81,8 +96,6 @@ export class Application {
       console.error(error);
     }
 
-    response
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .json({ errors: ['Some internal server error'] });
+    response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ errors: InternalServerErrors });
   }
 }

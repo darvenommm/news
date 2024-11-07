@@ -18,11 +18,15 @@ export class AuthMiddleware extends Middleware {
     this.authService = container[AUTH_SERVICE] as IAuthService;
   }
 
-  public getMiddleware(): MiddlewareType {
-    return this.middleware.bind(this);
+  public get middleware(): MiddlewareType {
+    return this.middlewareHandler.bind(this);
   }
 
-  private async middleware(request: Request, _: Response, next: NextFunction): Promise<void> {
+  private async middlewareHandler(
+    request: Request,
+    _: Response,
+    next: NextFunction,
+  ): Promise<void> {
     const session = request.signedCookies.session;
 
     if (session) {

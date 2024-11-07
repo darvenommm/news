@@ -15,7 +15,7 @@ export class SignUpValidator extends Validator {
         trim: true,
         escape: true,
         notEmpty: {
-          errorMessage: 'Email cannot be empty',
+          errorMessage: 'The email cannot be empty',
         },
         isEmail: {
           errorMessage: 'Invalid email format',
@@ -26,11 +26,11 @@ export class SignUpValidator extends Validator {
         trim: true,
         escape: true,
         notEmpty: {
-          errorMessage: 'Username cannot be empty',
+          errorMessage: 'The username cannot be empty',
         },
         isLength: {
           options: { min: USERNAME_CONSTRAINTS.minLength, max: USERNAME_CONSTRAINTS.maxLength },
-          errorMessage: `Username must be between ${USERNAME_CONSTRAINTS.minLength} and ${USERNAME_CONSTRAINTS.maxLength} characters long`,
+          errorMessage: `The username must be between ${USERNAME_CONSTRAINTS.minLength} and ${USERNAME_CONSTRAINTS.maxLength} characters long`,
         },
         matches: {
           options: USERNAME_CONSTRAINTS.getPattern(),
@@ -40,11 +40,11 @@ export class SignUpValidator extends Validator {
       password: {
         trim: true,
         notEmpty: {
-          errorMessage: 'Password cannot be empty',
+          errorMessage: 'The password cannot be empty',
         },
         isLength: {
           options: { min: PASSWORD_CONSTRAINTS.minLength, max: PASSWORD_CONSTRAINTS.maxLength },
-          errorMessage: `Password must be between ${PASSWORD_CONSTRAINTS.minLength} and ${PASSWORD_CONSTRAINTS.maxLength} characters long`,
+          errorMessage: `The password must be between ${PASSWORD_CONSTRAINTS.minLength} and ${PASSWORD_CONSTRAINTS.maxLength} characters long`,
         },
       },
     });

@@ -1,2 +1,2 @@
-export type { SignInDTO } from './signIn';
-export type { SignUpDTO } from './signUp';
+export type * from './signIn';
+export type * from './signUp';

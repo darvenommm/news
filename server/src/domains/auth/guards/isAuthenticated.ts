@@ -11,7 +11,7 @@ import type { IContainer } from '@/container';
 
 export const IS_AUTHENTICATED_GUARD = getUniqueId();
 
-export class IsAuthenticatedGuard extends Guard {
+export class IsAuthenticatedGuard extends Guard<never> {
   private readonly authService: IAuthService;
 
   public constructor(container: IContainer) {

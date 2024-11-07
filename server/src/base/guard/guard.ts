@@ -6,7 +6,7 @@ import type { Request, Response, NextFunction } from 'express';
 import type { Middleware } from '@/types';
 import type { Errors } from '../errors';
 
-export abstract class Guard<T = any> {
+export abstract class Guard<T = unknown> {
   public getGuard(argument?: T): Middleware {
     return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       try {

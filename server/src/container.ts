@@ -1,6 +1,7 @@
 import { asClass, createContainer, InjectionMode } from 'awilix';
 
 import { addAuthDependenciesIntoContainer } from './domains/auth';
+import { addNewsDependenciesIntoContainer } from './domains/news';
 import { ADMIN_SETTINGS, AdminSettings } from './settings/admin';
 import { DATABASE_SETTINGS, DatabaseSettings } from './settings/database';
 import { EXTRA_SETTINGS, ExtraSettings } from './settings/extra';
@@ -34,6 +35,7 @@ export class Container {
     });
 
     addAuthDependenciesIntoContainer(container);
+    addNewsDependenciesIntoContainer(container);
 
     this._container = container;
   }

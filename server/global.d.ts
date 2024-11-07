@@ -1,10 +1,10 @@
-import type { User } from './src/domains/auth';
+import { IUser } from '@/domains/auth';
 
 declare global {
   namespace Express {
     export interface Request {
       payload: unknown;
-      user: User | null;
+      user: IUser | null;
     }
   }
 }

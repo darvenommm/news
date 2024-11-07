@@ -117,6 +117,7 @@ export class AuthController extends Controller {
   private setSessionIntoCookies(response: Response, session: string): void {
     response.cookie('session', session, {
       httpOnly: true,
+      signed: true,
       priority: 'high',
       maxAge: ms('2 weeks'),
     });

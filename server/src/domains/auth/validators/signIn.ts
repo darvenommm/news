@@ -15,7 +15,7 @@ export class SignInValidator extends Validator {
       emailOrUsername: {
         trim: true,
         notEmpty: {
-          errorMessage: 'Username or Email cannot be empty',
+          errorMessage: 'The username or Email cannot be empty',
         },
         customSanitizer: {
           options: (value: string): string => {
@@ -31,13 +31,13 @@ export class SignInValidator extends Validator {
             const { minLength, maxLength } = USERNAME_CONSTRAINTS;
             if (!(minLength <= value.length && value.length <= maxLength)) {
               throw new Error(
-                `Username must be between ${minLength} and ${maxLength} characters long`,
+                `The username must be between ${minLength} and ${maxLength} characters long`,
               );
             }
 
             if (!USERNAME_CONSTRAINTS.getPattern().test(value)) {
               throw new Error(
-                `Username format should be like ${USERNAME_CONSTRAINTS.getBeautifulPatternView()}`,
+                `The username format should be like ${USERNAME_CONSTRAINTS.getBeautifulPatternView()}`,
               );
             }
 
@@ -48,11 +48,11 @@ export class SignInValidator extends Validator {
       password: {
         trim: true,
         notEmpty: {
-          errorMessage: 'Password cannot be empty',
+          errorMessage: 'The password cannot be empty',
         },
         isLength: {
           options: { min: PASSWORD_CONSTRAINTS.minLength, max: PASSWORD_CONSTRAINTS.maxLength },
-          errorMessage: `Password must be between ${PASSWORD_CONSTRAINTS.minLength} and ${PASSWORD_CONSTRAINTS.maxLength} characters long`,
+          errorMessage: `The password must be between ${PASSWORD_CONSTRAINTS.minLength} and ${PASSWORD_CONSTRAINTS.maxLength} characters long`,
         },
       },
     });

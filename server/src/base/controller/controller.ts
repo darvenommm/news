@@ -14,6 +14,8 @@ interface AddRouteOptions {
 
 export abstract class Controller {
   protected abstract prefix: string;
+  protected outerMiddlewares: Middleware[] = [];
+  protected innerMiddlewares: Middleware[] = [];
 
   private readonly _router: Router;
 
@@ -53,7 +55,9 @@ export abstract class Controller {
     const needMethod = routerMethods[method].bind(this._router);
     needMethod(
       `${this.prefix}${path}`,
+      ...this.outerMiddlewares,
       ...(middlewares ?? []),
+      ...this.innerMiddlewares,
       this.handleError(handler.bind(handlerThis)),
     );
   }

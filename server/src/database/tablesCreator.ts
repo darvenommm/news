@@ -3,6 +3,7 @@ import { TablesCreator } from '@/base/tableCreator';
 import { getUniqueId } from '@/helpers';
 import { DATABASE } from './database';
 import { AUTH_TABLES_CREATOR } from '@/domains/auth';
+import { NEWS_TABLES_CREATOR } from '@/domains/news';
 
 import type { IContainer } from '@/container';
 import type { IDatabase } from './database';
@@ -19,7 +20,8 @@ export class DatabaseTablesCreator extends TablesCreator {
     this.database = container[DATABASE] as IDatabase;
 
     const authTablesCreator = container[AUTH_TABLES_CREATOR] as TablesCreator;
-    this.tablesCreators = [authTablesCreator];
+    const newsTablesCreator = container[NEWS_TABLES_CREATOR] as TablesCreator;
+    this.tablesCreators = [authTablesCreator, newsTablesCreator];
   }
 
   public async create(): Promise<void> {
